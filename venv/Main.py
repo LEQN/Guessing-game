@@ -8,31 +8,38 @@ class GameGUI:
         self.root = tk.Tk()
         self.root.geometry("500x700")
         self.root.title("Num Guess")
+        self.root.configure(background='DodgerBlue')
 
-        self.label = tk.Label(self.root, text="Guess the Number", font=('Arial', 24, 'underline'))
-        self.label.pack(padx=25, pady=100)
+        self.label = tk.Label(self.root, text="Guess the Number", font=('Arial', 24, 'underline', 'bold' ), bg='DodgerBlue', fg='white')
+        self.label.pack(padx=25, pady=80)
 
         # input frame
         self.inputFrame = tk.Frame(self.root)
+        self.inputFrame.configure(background='DodgerBlue')
         self.inputFrame.columnconfigure(0, weight=1)
         self.inputFrame.columnconfigure(1, weight=1)
         # range input
-        self.rangeLabel = tk.Label(self.inputFrame, text="Range upperbound: ", font=('Arial', 12))
+        self.rangeLabel = tk.Label(self.inputFrame, text="Range upperbound: ", font=('Arial', 16), bg='DodgerBlue', fg='white')
         self.rangeLabel.grid(row=0, column=0, pady=20)
         self.rangeEntry = tk.Entry(self.inputFrame)
         self.rangeEntry.grid(row=0, column=1, pady=20)
         # attempts input
-        self.attemptLabel = tk.Label(self.inputFrame, text="Attempts: ", font=('Arial', 12))
+        self.attemptLabel = tk.Label(self.inputFrame, text="Attempts: ", font=('Arial', 16), bg='DodgerBlue', fg='white')
         self.attemptLabel.grid(row=1, column=0, pady=20)
         self.attemptEntry = tk.Entry(self.inputFrame)
         self.attemptEntry.grid(row=1, column=1, pady=20)
 
-        self.inputFrame.pack()
+        self.inputFrame.pack(padx=25, pady=25)
         # start button
-        self.startButton = tk.Button(self.root, text="Start!", font=('Arial', 18))
-        self.startButton.pack(padx=15, pady=15)
+        self.buttonBorder = tk.Frame(self.root, highlightbackground = 'white', highlightthickness = 2, bd=0)
+        self.startButton = tk.Button(self.buttonBorder, text="Start!", font=('Arial', 18), height=2, width=10, bg='DodgerBlue', fg='white')
+        self.startButton.pack()
+        self.buttonBorder.pack(padx=15, pady=80)
 
         self.root.mainloop()
+
+        def callback():
+            print("hello")
 GameGUI()
 
 
