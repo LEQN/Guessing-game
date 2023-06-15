@@ -11,34 +11,51 @@ class GameGUI:
         self.root.title("Num Guess")
         self.root.configure(background='DodgerBlue')
 
-        self.label = tk.Label(self.root, text="Guess the Number", font=('Arial', 24, 'underline', 'bold' ), bg='DodgerBlue', fg='white')
-        self.label.pack(padx=25, pady=80)
+        # load all the pages and store them
+        self.pages = []
+        self.current_page_index = 0
 
+        self.start_page()
+        self.guess_page()
+        self.display_current()
+
+        self.root.mainloop()
+
+    # load the frame for the start page and add to the list
+    def start_page(self):
+        self.start_frame = tk.Frame(self.root, bg='DodgerBlue')
+        self.label = tk.Label(self.start_frame, text="Guess the Number", font=('Arial', 24, 'underline', 'bold'),
+                              bg='DodgerBlue', fg='white')
+        self.label.pack(padx=25, pady=80)
         # input frame
-        self.inputFrame = tk.Frame(self.root)
-        self.inputFrame.configure(background='DodgerBlue')
+        self.inputFrame = tk.Frame(self.start_frame, bg='DodgerBlue')
         self.inputFrame.columnconfigure(0, weight=1)
         self.inputFrame.columnconfigure(1, weight=1)
         # range input
-        self.rangeLabel = tk.Label(self.inputFrame, text="Range upperbound: ", font=('Arial', 16), bg='DodgerBlue', fg='white')
+        self.rangeLabel = tk.Label(self.inputFrame, text="Range upperbound: ", font=('Arial', 16), bg='DodgerBlue',
+                                   fg='white')
         self.rangeLabel.grid(row=0, column=0, pady=20)
         self.rangeEntry = tk.Entry(self.inputFrame)
         self.rangeEntry.grid(row=0, column=1, pady=20)
         # attempts input
-        self.attemptLabel = tk.Label(self.inputFrame, text="Attempts: ", font=('Arial', 16), bg='DodgerBlue', fg='white')
+        self.attemptLabel = tk.Label(self.inputFrame, text="Attempts: ", font=('Arial', 16), bg='DodgerBlue',
+                                     fg='white')
         self.attemptLabel.grid(row=1, column=0, pady=20)
         self.attemptEntry = tk.Entry(self.inputFrame)
         self.attemptEntry.grid(row=1, column=1, pady=20)
 
         self.inputFrame.pack(padx=25, pady=25)
         # start button
-        self.buttonBorder = tk.Frame(self.root, highlightbackground = 'white', highlightthickness = 2, bd=0)
-        self.startButton = tk.Button(self.buttonBorder, text="Start!", font=('Arial', 18), height=2, width=10, bg='DodgerBlue', fg='white', command=self.check_start_input)
+        self.buttonBorder = tk.Frame(self.start_frame, highlightbackground='white', highlightthickness=2, bd=0)
+        self.startButton = tk.Button(self.buttonBorder, text="Start!", font=('Arial', 18), height=2, width=10,
+                                     bg='DodgerBlue', fg='white', command=self.check_start_input)
         self.startButton.pack()
         self.buttonBorder.pack(padx=15, pady=80)
 
-        self.root.mainloop()
+        self.pages.append(self.start_frame)
 
+    # retrieve the input in the entry boxes and check the type and values are valid before loading next scene and
+    # starting the game.
     def check_start_input(self):
         try:
             upperbound = int(self.rangeEntry.get())
@@ -47,9 +64,37 @@ class GameGUI:
             if upperbound <= 0 or attempts <= 0:
                 messagebox.showerror(title="Error", message="Input must be greater than 0.")
             else:
-                pass
+                self.current_page_index += 1
+                self.display_current()
         except ValueError:
             messagebox.showerror(title="Error", message="Invalid input. Please enter a valid Integer.")
+
+    # load the frame for the guessing page. The game begins
+    def guess_page(self):
+        self.guess_frame = tk.Frame(self.root, bg='DodgerBlue')
+
+        self.titleLabel = tk.Label(self.guess_frame, text="Guess the Number", font=('Arial', 18, 'underline', 'bold'),
+                              bg='DodgerBlue', fg='white')
+        self.titleLabel.pack(padx=25, pady=80)
+        self.guessEntry = tk.Entry(self.guess_frame)
+        self.guessEntry.pack(padx=25, pady=80)
+
+        self.buttonBorder = tk.Frame(self.guess_frame, highlightbackground='white', highlightthickness=2, bd=0)
+        self.startButton = tk.Button(self.buttonBorder, text="Enter Guess!", font=('Arial', 18), height=2, width=10,
+                                     bg='DodgerBlue', fg='white')
+        self.startButton.pack()
+        self.buttonBorder.pack(padx=15, pady=80)
+        self.guess_frame.pack()
+
+        self.pages.append(self.guess_frame)
+
+    # display the current page
+    def display_current(self):
+        for page in self.pages:
+            page.pack_forget()
+
+        current_page = self.pages[self.current_page_index]
+        current_page.pack()
 
 GameGUI()
 
