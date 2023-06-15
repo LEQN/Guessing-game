@@ -36,12 +36,14 @@ class GameGUI:
                                    fg='white')
         self.rangeLabel.grid(row=0, column=0, pady=20)
         self.rangeEntry = tk.Entry(self.inputFrame)
+        self.rangeEntry.bind("<KeyPress>", self.shortcut)
         self.rangeEntry.grid(row=0, column=1, pady=20)
         # attempts input
         self.attemptLabel = tk.Label(self.inputFrame, text="Attempts: ", font=('Arial', 16), bg='DodgerBlue',
                                      fg='white')
         self.attemptLabel.grid(row=1, column=0, pady=20)
         self.attemptEntry = tk.Entry(self.inputFrame)
+        self.attemptEntry.bind("<KeyPress>", self.shortcut)
         self.attemptEntry.grid(row=1, column=1, pady=20)
 
         self.inputFrame.pack(padx=25, pady=25)
@@ -69,7 +71,7 @@ class GameGUI:
         except ValueError:
             messagebox.showerror(title="Error", message="Invalid input. Please enter a valid Integer.")
 
-    # load the frame for the guessing page. The game begins
+    # load the frame for the guessing page. The game begins before this page loads.
     def guess_page(self):
         self.guess_frame = tk.Frame(self.root, bg='DodgerBlue')
 
@@ -95,6 +97,13 @@ class GameGUI:
 
         current_page = self.pages[self.current_page_index]
         current_page.pack()
+
+    def shortcut(self, event):
+        if (event.state == 8 and event.keysym == "Return") or (event.state == 262152 and event.keysym == "Return"):
+            if len(self.attemptEntry.get()) == 0:
+                self.attemptEntry.focus_set()
+            else:
+                self.check_start_input()
 
 GameGUI()
 
