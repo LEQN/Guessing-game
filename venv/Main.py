@@ -1,5 +1,6 @@
 import random
 import tkinter as tk
+from tkinter import messagebox
 
 class GameGUI:
 
@@ -32,14 +33,24 @@ class GameGUI:
         self.inputFrame.pack(padx=25, pady=25)
         # start button
         self.buttonBorder = tk.Frame(self.root, highlightbackground = 'white', highlightthickness = 2, bd=0)
-        self.startButton = tk.Button(self.buttonBorder, text="Start!", font=('Arial', 18), height=2, width=10, bg='DodgerBlue', fg='white')
+        self.startButton = tk.Button(self.buttonBorder, text="Start!", font=('Arial', 18), height=2, width=10, bg='DodgerBlue', fg='white', command=self.check_start_input)
         self.startButton.pack()
         self.buttonBorder.pack(padx=15, pady=80)
 
         self.root.mainloop()
 
-        def callback():
-            print("hello")
+    def check_start_input(self):
+        try:
+            upperbound = int(self.rangeEntry.get())
+            attempts = int(self.attemptEntry.get())
+
+            if upperbound <= 0 or attempts <= 0:
+                messagebox.showerror(title="Error", message="Input must be greater than 0.")
+            else:
+                pass
+        except ValueError:
+            messagebox.showerror(title="Error", message="Invalid input. Please enter a valid Integer.")
+
 GameGUI()
 
 
@@ -55,6 +66,7 @@ GameGUI()
 #             break
 #     except ValueError:
 #         print("Invalid input. Please enter valid integers.")
+#
 # # generate a random number within ranges
 # goal = random.randint(0, upper_bound)
 #
