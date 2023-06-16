@@ -11,6 +11,9 @@ class GameGUI:
         self.root.title("Num Guess")
         self.root.configure(background='DodgerBlue')
 
+        # create upperbound and attempts variables
+        self.upper = 0
+        self.attempts = 0
         # load all the pages and store them
         self.pages = []
         self.current_page_index = 0
@@ -60,12 +63,13 @@ class GameGUI:
     # starting the game.
     def check_start_input(self):
         try:
-            upperbound = int(self.rangeEntry.get())
-            attempts = int(self.attemptEntry.get())
+            self.upper = int(self.rangeEntry.get())
+            self.attempts = int(self.attemptEntry.get())
 
-            if upperbound <= 0 or attempts <= 0:
+            if self.upper <= 0 or self.attempts <= 0:
                 messagebox.showerror(title="Error", message="Input must be greater than 0.")
             else:
+                self.goal = random.randint(0, self.upper)
                 self.current_page_index += 1
                 self.display_current()
         except ValueError:
@@ -79,11 +83,12 @@ class GameGUI:
                               bg='DodgerBlue', fg='white')
         self.titleLabel.pack(padx=25, pady=80)
         self.guessEntry = tk.Entry(self.guess_frame)
+        self.guessEntry.bind("<KeyPress>", self.shortcut)
         self.guessEntry.pack(padx=25, pady=80)
 
         self.buttonBorder = tk.Frame(self.guess_frame, highlightbackground='white', highlightthickness=2, bd=0)
         self.startButton = tk.Button(self.buttonBorder, text="Enter Guess!", font=('Arial', 18), height=2, width=10,
-                                     bg='DodgerBlue', fg='white')
+                                     bg='DodgerBlue', fg='white', command=self.guess_check)
         self.startButton.pack()
         self.buttonBorder.pack(padx=15, pady=80)
         self.guess_frame.pack()
@@ -99,11 +104,42 @@ class GameGUI:
         current_page.pack()
 
     def shortcut(self, event):
-        if (event.state == 8 and event.keysym == "Return") or (event.state == 262152 and event.keysym == "Return"):
-            if len(self.attemptEntry.get()) == 0:
-                self.attemptEntry.focus_set()
+        if self.current_page_index == 0:
+            if (event.state == 8 and event.keysym == "Return") or (event.state == 262152 and event.keysym == "Return"):
+                if len(self.attemptEntry.get()) == 0:
+                    self.attemptEntry.focus_set()
+                else:
+                    self.check_start_input()
+        elif self.current_page_index == 1:
+            if (event.state == 8 and event.keysym == "Return") or (event.state == 262152 and event.keysym == "Return"):
+                self.guess_check()
+
+    # check guess is valid
+    def guess_check(self):
+        try:
+            guess = int(self.guessEntry.get())
+            if guess >= self.upper or guess < 0:
+                messagebox.showerror(title="Error",
+                                     message="Guess must be a positive value and less than or equal to the upperbound.")
             else:
-                self.check_start_input()
+                self.game_logic(guess)
+        except ValueError:
+            messagebox.showerror(title="Error", message="Input a valid guess integer.")
+
+    # do all main game logic
+    def game_logic(self, guess):
+        self.attempts -= 1
+        if self.attempts > 0:
+            if guess != self.goal:
+                if guess > self.goal:
+                    print("Too high")
+                else:
+                    print("Too low")
+            else:
+                print("You win! Guesses left over: ", self.attempts)
+        else:
+            print("you lose")
+            exit()
 
 GameGUI()
 
