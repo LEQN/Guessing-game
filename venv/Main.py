@@ -82,9 +82,16 @@ class GameGUI:
         self.titleLabel = tk.Label(self.guess_frame, text="Guess the Number", font=('Arial', 18, 'underline', 'bold'),
                               bg='DodgerBlue', fg='white')
         self.titleLabel.pack(padx=25, pady=80)
+        self.guessResultLabel = tk.Label(self.guess_frame, text="", font=('Arial', 18, 'underline', 'bold'),
+                              bg='DodgerBlue', fg='Red')
+        self.guessResultLabel.pack()
         self.guessEntry = tk.Entry(self.guess_frame)
         self.guessEntry.bind("<KeyPress>", self.shortcut)
         self.guessEntry.pack(padx=25, pady=80)
+
+        self.remainingAttempts = tk.Label(self.guess_frame, text="", font=('Arial', 18, 'underline', 'bold'),
+                                         bg='DodgerBlue', fg='Red')
+        self.remainingAttempts.pack()
 
         self.buttonBorder = tk.Frame(self.guess_frame, highlightbackground='white', highlightthickness=2, bd=0)
         self.startButton = tk.Button(self.buttonBorder, text="Enter Guess!", font=('Arial', 18), height=2, width=10,
@@ -132,11 +139,14 @@ class GameGUI:
         if self.attempts > 0:
             if guess != self.goal:
                 if guess > self.goal:
-                    print("Too high")
+                    self.guessResultLabel.configure(text="Too high!")
+                    self.remainingAttempts.configure(text="Remaining attempts: " + str(self.attempts))
                 else:
-                    print("Too low")
+                    self.guessResultLabel.configure(text="Too low!")
+                    self.remainingAttempts.configure(text="Remaining attempts: " + str(self.attempts))
             else:
                 print("You win! Guesses left over: ", self.attempts)
+                exit()
         else:
             print("you lose")
             exit()
