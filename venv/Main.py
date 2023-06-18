@@ -20,6 +20,7 @@ class GameGUI:
 
         self.start_page()
         self.guess_page()
+        self.end_page()
         self.display_current()
 
         self.root.mainloop()
@@ -94,9 +95,9 @@ class GameGUI:
         self.remainingAttempts.pack()
 
         self.buttonBorder = tk.Frame(self.guess_frame, highlightbackground='white', highlightthickness=2, bd=0)
-        self.startButton = tk.Button(self.buttonBorder, text="Enter Guess!", font=('Arial', 18), height=2, width=10,
+        self.guessButton = tk.Button(self.buttonBorder, text="Enter Guess!", font=('Arial', 18), height=2, width=10,
                                      bg='DodgerBlue', fg='white', command=self.guess_check)
-        self.startButton.pack()
+        self.guessButton.pack()
         self.buttonBorder.pack(padx=15, pady=80)
         self.guess_frame.pack()
 
@@ -145,11 +146,34 @@ class GameGUI:
                     self.guessResultLabel.configure(text="Too low!")
                     self.remainingAttempts.configure(text="Remaining attempts: " + str(self.attempts))
             else:
-                print("You win! Guesses left over: ", self.attempts)
-                exit()
+                self.endLabel.configure(text="You Won!!")
+                self.endAttemptsLabel.configure(text="Attempts left over: " + str(self.attempts))
+                self.current_page_index += 1
+                self.display_current()
         else:
-            print("you lose")
-            exit()
+            self.endLabel.configure(text="You Lose")
+            self.endAttemptsLabel.configure(text="No Guesses left")
+            self.current_page_index += 1
+            self.display_current()
+
+    # create frame for the ending page indicating whether player won or lost.
+    def end_page(self):
+        self.endFrame = tk.Frame(self.root, bg='DodgerBlue')
+        self.endLabel = tk.Label(self.endFrame, text="", font=('Arial', 18, 'underline', 'bold'),
+                                         bg='DodgerBlue', fg='Red')
+        self.endLabel.pack(padx=25, pady=80)
+
+        self.endAttemptsLabel = tk.Label(self.endFrame, text="", font=('Arial', 18, 'underline', 'bold'),
+                                         bg='DodgerBlue', fg='Red')
+        self.endAttemptsLabel.pack(padx=25, pady=80)
+
+        self.buttonBorder = tk.Frame(self.endFrame, highlightbackground='white', highlightthickness=2, bd=0)
+        self.startButton = tk.Button(self.buttonBorder, text="Play again?", font=('Arial', 18), height=2, width=10,
+                                     bg='DodgerBlue', fg='white')
+        self.startButton.pack()
+        self.buttonBorder.pack(padx=15, pady=80)
+        self.endFrame.pack()
+        self.pages.append(self.endFrame)
 
 GameGUI()
 
