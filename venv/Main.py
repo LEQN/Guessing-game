@@ -126,7 +126,7 @@ class GameGUI:
     def guess_check(self):
         try:
             guess = int(self.guessEntry.get())
-            if guess >= self.upper or guess < 0:
+            if guess > self.upper or guess < 0:
                 messagebox.showerror(title="Error",
                                      message="Guess must be a positive value and less than or equal to the upperbound.")
             else:
@@ -169,11 +169,24 @@ class GameGUI:
 
         self.buttonBorder = tk.Frame(self.endFrame, highlightbackground='white', highlightthickness=2, bd=0)
         self.startButton = tk.Button(self.buttonBorder, text="Play again?", font=('Arial', 18), height=2, width=10,
-                                     bg='DodgerBlue', fg='white')
+                                     bg='DodgerBlue', fg='white', command=self.play_Again)
         self.startButton.pack()
         self.buttonBorder.pack(padx=15, pady=80)
         self.endFrame.pack()
         self.pages.append(self.endFrame)
+
+    # load the start screen and load a new game
+    def play_Again(self):
+        # reset each entry box
+        self.rangeEntry.delete(0, tk.END)
+        self.attemptEntry.delete(0, tk.END)
+        self.guessEntry.delete(0, tk.END)
+        # reset labels
+        self.guessResultLabel.configure(text="")
+        self.remainingAttempts.configure(text="")
+        # load start
+        self.current_page_index = 0
+        self.display_current()
 
 GameGUI()
 
