@@ -1,15 +1,16 @@
 import random
-import tkinter as tk
+# import tkinter as tk
 from tkinter import messagebox
-
+import customtkinter as ctk
 class GameGUI:
 
     def __init__(self):
         # set window and size
-        self.root = tk.Tk()
+        ctk.set_appearance_mode("dark")
+        ctk.set_default_color_theme("dark-blue")
+        self.root = ctk.CTk()
         self.root.geometry("500x700")
         self.root.title("Num Guess")
-        self.root.configure(background='DodgerBlue')
 
         # create upperbound and attempts variables
         self.upper = 0
@@ -19,45 +20,38 @@ class GameGUI:
         self.current_page_index = 0
 
         self.start_page()
-        self.guess_page()
-        self.end_page()
-        self.display_current()
+        # self.guess_page()
+        # self.end_page()
+        # self.display_current()
 
         self.root.mainloop()
 
     # load the frame for the start page and add to the list
     def start_page(self):
-        self.start_frame = tk.Frame(self.root, bg='DodgerBlue')
-        self.label = tk.Label(self.start_frame, text="Guess the Number", font=('Arial', 24, 'underline', 'bold'),
-                              bg='DodgerBlue', fg='white')
+        self.start_frame = ctk.CTkFrame(master=self.root)
+        self.label = ctk.CTkLabel(master=self.start_frame, text="Guess the Number", font=('Arial', 24, 'underline', 'bold'), text_color="#00aaff")
         self.label.pack(padx=25, pady=80)
-        # input frame
-        self.inputFrame = tk.Frame(self.start_frame, bg='DodgerBlue')
-        self.inputFrame.columnconfigure(0, weight=1)
-        self.inputFrame.columnconfigure(1, weight=1)
-        # range input
-        self.rangeLabel = tk.Label(self.inputFrame, text="Range upperbound: ", font=('Arial', 16), bg='DodgerBlue',
-                                   fg='white')
-        self.rangeLabel.grid(row=0, column=0, pady=20)
-        self.rangeEntry = tk.Entry(self.inputFrame)
+        # # input frame
+        self.inputFrame = ctk.CTkFrame(master=self.start_frame)
+        # # range input
+        self.rangeLabel = ctk.CTkLabel(master=self.inputFrame, text="Range upperbound: ", font=('Arial', 16), text_color="#00aaff")
+        self.rangeLabel.grid(row=0, column=0, padx=20, pady=20)
+        self.rangeEntry = ctk.CTkEntry(master=self.inputFrame)
         self.rangeEntry.bind("<KeyPress>", self.shortcut)
-        self.rangeEntry.grid(row=0, column=1, pady=20)
-        # attempts input
-        self.attemptLabel = tk.Label(self.inputFrame, text="Attempts: ", font=('Arial', 16), bg='DodgerBlue',
-                                     fg='white')
+        self.rangeEntry.grid(row=0, column=1, padx=15, pady=20)
+        # # attempts input
+        self.attemptLabel = ctk.CTkLabel(master=self.inputFrame, text="Attempts: ", font=('Arial', 16), text_color="#00aaff")
         self.attemptLabel.grid(row=1, column=0, pady=20)
-        self.attemptEntry = tk.Entry(self.inputFrame)
+        self.attemptEntry = ctk.CTkEntry(master=self.inputFrame)
         self.attemptEntry.bind("<KeyPress>", self.shortcut)
         self.attemptEntry.grid(row=1, column=1, pady=20)
 
         self.inputFrame.pack(padx=25, pady=25)
         # start button
-        self.buttonBorder = tk.Frame(self.start_frame, highlightbackground='white', highlightthickness=2, bd=0)
-        self.startButton = tk.Button(self.buttonBorder, text="Start!", font=('Arial', 18), height=2, width=10,
-                                     bg='DodgerBlue', fg='white', command=self.check_start_input)
-        self.startButton.pack()
-        self.buttonBorder.pack(padx=15, pady=80)
-
+        self.startButton = ctk.CTkButton(master=self.start_frame, text="Start!", font=('Arial', 18), height=50, width=200,
+                                         border_width=2, corner_radius=8, command=self.check_start_input)
+        self.startButton.pack(padx=15, pady=80)
+        self.start_frame.pack(fill="both", expand=True)
         self.pages.append(self.start_frame)
 
     # retrieve the input in the entry boxes and check the type and values are valid before loading next scene and
