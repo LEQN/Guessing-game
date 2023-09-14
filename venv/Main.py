@@ -166,9 +166,9 @@ class GameGUI:
     # load the start screen and load a new game
     def play_Again(self):
         # reset each entry box
-        self.rangeEntry.delete(0, tk.END)
-        self.attemptEntry.delete(0, tk.END)
-        self.guessEntry.delete(0, tk.END)
+        self.rangeEntry.delete(0, ctk.END)
+        self.attemptEntry.delete(0, ctk.END)
+        self.guessEntry.delete(0, ctk.END)
         # reset labels
         self.guessResultLabel.configure(text="")
         self.remainingAttempts.configure(text="")
