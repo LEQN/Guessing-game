@@ -131,9 +131,11 @@ class GameGUI:
                 if guess > self.goal:
                     self.guessResultLabel.configure(text="Too high!")
                     self.remainingAttempts.configure(text="Remaining attempts: " + str(self.attempts))
+                    self.guessEntry.delete(0,ctk.END)
                 else:
                     self.guessResultLabel.configure(text="Too low!")
                     self.remainingAttempts.configure(text="Remaining attempts: " + str(self.attempts))
+                    self.guessEntry.delete(0, ctk.END)
             else:
                 self.endLabel.configure(text="You Won!!")
                 self.endAttemptsLabel.configure(text="Attempts left over: " + str(self.attempts))
