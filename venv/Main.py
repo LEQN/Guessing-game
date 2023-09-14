@@ -20,7 +20,7 @@ class GameGUI:
         self.current_page_index = 0
 
         self.start_page()
-        # self.guess_page()
+        self.guess_page()
         # self.end_page()
         # self.display_current()
 
@@ -72,29 +72,24 @@ class GameGUI:
 
     # load the frame for the guessing page. The game begins before this page loads.
     def guess_page(self):
-        self.guess_frame = tk.Frame(self.root, bg='DodgerBlue')
+        self.guess_frame = ctk.CTkFrame(master=self.root)
 
-        self.titleLabel = tk.Label(self.guess_frame, text="Guess the Number", font=('Arial', 18, 'underline', 'bold'),
-                              bg='DodgerBlue', fg='white')
-        self.titleLabel.pack(padx=25, pady=80)
-        self.guessResultLabel = tk.Label(self.guess_frame, text="", font=('Arial', 18, 'underline', 'bold'),
-                              bg='DodgerBlue', fg='Red')
+        self.titleLabel = ctk.CTkLabel(master=self.guess_frame, text="Guess the Number", font=('Arial', 24, 'underline', 'bold'), text_color="#00aaff")
+        self.titleLabel.pack(padx=50, pady=80)
+        self.guessResultLabel = ctk.CTkLabel(master=self.guess_frame, text="", font=('Arial', 18, 'underline', 'bold'), text_color="red")
         self.guessResultLabel.pack()
-        self.guessEntry = tk.Entry(self.guess_frame)
+        #input
+        self.guessEntry = ctk.CTkEntry(master=self.guess_frame)
         self.guessEntry.bind("<KeyPress>", self.shortcut)
         self.guessEntry.pack(padx=25, pady=80)
 
-        self.remainingAttempts = tk.Label(self.guess_frame, text="", font=('Arial', 18, 'underline', 'bold'),
-                                         bg='DodgerBlue', fg='Red')
+        self.remainingAttempts = ctk.CTkLabel(master=self.guess_frame, text="", font=('Arial', 18, 'underline', 'bold'),text_color="red")
         self.remainingAttempts.pack()
 
-        self.buttonBorder = tk.Frame(self.guess_frame, highlightbackground='white', highlightthickness=2, bd=0)
-        self.guessButton = tk.Button(self.buttonBorder, text="Enter Guess!", font=('Arial', 18), height=2, width=10,
-                                     bg='DodgerBlue', fg='white', command=self.guess_check)
-        self.guessButton.pack()
-        self.buttonBorder.pack(padx=15, pady=80)
-        self.guess_frame.pack()
-
+        self.guessButton = ctk.CTkButton(master=self.guess_frame, text="Enter Guess!", font=('Arial', 20), height=50, width=120,
+                                     border_width=2, corner_radius=8, command=self.guess_check)
+        self.guessButton.pack(padx=20, pady=110)
+        self.guess_frame.pack(fill="both", expand=True)
         self.pages.append(self.guess_frame)
 
     # display the current page
