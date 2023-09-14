@@ -21,8 +21,8 @@ class GameGUI:
 
         self.start_page()
         self.guess_page()
-        # self.end_page()
-        # self.display_current()
+        self.end_page()
+        self.display_current()
 
         self.root.mainloop()
 
@@ -149,20 +149,17 @@ class GameGUI:
 
     # create frame for the ending page indicating whether player won or lost.
     def end_page(self):
-        self.endFrame = tk.Frame(self.root, bg='DodgerBlue')
-        self.endLabel = tk.Label(self.endFrame, text="", font=('Arial', 18, 'underline', 'bold'),
-                                         bg='DodgerBlue', fg='Red')
+        self.endFrame = ctk.CTkFrame(master=self.root)
+        self.endLabel = ctk.CTkLabel(master=self.endFrame, text="", font=('Arial', 28, 'underline', 'bold'))
         self.endLabel.pack(padx=25, pady=80)
 
-        self.endAttemptsLabel = tk.Label(self.endFrame, text="", font=('Arial', 18, 'underline', 'bold'),
-                                         bg='DodgerBlue', fg='Red')
+        self.endAttemptsLabel = ctk.CTkLabel(master=self.endFrame, text="", font=('Arial', 24, 'underline', 'bold'))
         self.endAttemptsLabel.pack(padx=25, pady=80)
 
-        self.buttonBorder = tk.Frame(self.endFrame, highlightbackground='white', highlightthickness=2, bd=0)
-        self.startButton = tk.Button(self.buttonBorder, text="Play again?", font=('Arial', 18), height=2, width=10,
-                                     bg='DodgerBlue', fg='white', command=self.play_Again)
-        self.startButton.pack()
-        self.buttonBorder.pack(padx=15, pady=80)
+        self.startButton = ctk.CTkButton(master=self.endFrame, text="Play again?", font=('Arial', 18), height=50, width=120,
+                                     border_width=2, corner_radius=8, command=self.play_Again)
+        self.startButton.pack(padx=20, pady=110)
+
         self.endFrame.pack()
         self.pages.append(self.endFrame)
 
